@@ -13,7 +13,7 @@ int nScreenHeight=30;
 
 int rotate(int px,int py,int r)
 {
-    switch(r)
+    switch(r%4)
     {
         case 0: return py*4+px;         //0 Degree
         case 1: return 12+py-(px*4);    //90 degree
@@ -22,6 +22,7 @@ int rotate(int px,int py,int r)
         default:
                 cout<<"INCORRECT rotation input entered!!";
     }
+    //this will never happen :') ... but a good number tho
     return 6942069;
 }
 
@@ -52,41 +53,15 @@ bool doesPieceFit(int nTetromino, int nRotation,int nPosX, int nPosY)
 int main()
 {
     //creating assets i.e. the tetris blocks
-    tetromino[0].append(L"..X.");
-    tetromino[0].append(L"..X.");
-    tetromino[0].append(L"..X.");
-    tetromino[0].append(L"..X.");
+    tetromino[0].append(L"..X...X...X...X.");
+    tetromino[1].append(L"..X..XX..X......");
+    tetromino[2].append(L"..X..XX...X.....");
+    tetromino[3].append(L".X...XX...X.....");
+    tetromino[4].append(L"..X...X..XX.....");
+    tetromino[5].append(L".....XX..XX.....");
+    tetromino[6].append(L".X...X...XX.....");
 
-    tetromino[1].append(L"..X.");
-    tetromino[1].append(L".XX.");
-    tetromino[1].append(L".X..");
-    tetromino[1].append(L"....");
-
-    tetromino[2].append(L"..X.");
-    tetromino[2].append(L".XX.");
-    tetromino[2].append(L"..X.");
-    tetromino[2].append(L"....");
-
-    tetromino[3].append(L".X..");
-    tetromino[3].append(L".XX.");
-    tetromino[3].append(L"..X.");
-    tetromino[3].append(L"....");
-
-    tetromino[4].append(L"..X.");
-    tetromino[4].append(L"..X.");
-    tetromino[4].append(L".XX.");
-    tetromino[4].append(L"....");
-
-    tetromino[5].append(L"....");
-    tetromino[5].append(L".XX.");
-    tetromino[5].append(L".XX.");
-    tetromino[5].append(L"....");
-
-    tetromino[6].append(L".X..");
-    tetromino[6].append(L".X..");
-    tetromino[6].append(L".XX.");
-    tetromino[6].append(L"....");
-
+    //
     playingField=new unsigned char[nFieldWeidth*nFieldHeight];
     for(int x=0;x<nFieldWeidth;x++)
         for(int y=0;y<nFieldHeight;y++)
@@ -101,7 +76,7 @@ int main()
     DWORD dwBytesWritten=0;
 
     bool gameOver=false;
-    int nCurrentPiece=4;
+    int nCurrentPiece=5;
     int nCurrentRotation=0;
     int nCurrentX=nFieldWeidth/2;
     int nCurrentY=0;
@@ -125,6 +100,8 @@ int main()
         nCurrentX+=(bKey[0] && doesPieceFit(nCurrentPiece,nCurrentRotation,nCurrentX+1,nCurrentY)) ? 1:0;
             //moving down
         nCurrentY+=(bKey[2] && doesPieceFit(nCurrentPiece,nCurrentRotation,nCurrentX,nCurrentY+1)) ? 1:0;
+            //rotate
+        nCurrentRotation+= (bKey[3] && doesPieceFit(nCurrentPiece,nCurrentRotation+1,nCurrentX,nCurrentY)) ? 1:0;
 
         //render output ================================
 
