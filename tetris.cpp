@@ -52,6 +52,7 @@ bool doesPieceFit(int nTetromino, int nRotation,int nPosX, int nPosY)
 
 int main()
 {
+    srand(time(0));
     //creating assets i.e. the tetris blocks
     tetromino[0].append(L"..X...X...X...X.");
     tetromino[1].append(L"..X..XX..X......");
@@ -156,12 +157,12 @@ int main()
                 //calculating Score
                 nScore+=25;
                 if(!vLines.empty())
-                    nScore+=(1<<vLines.size())*100;
+                    nScore+=vLines.size()*vLines.size()*100;
 
                 //choose next piece;
                 nCurrentPiece=rand()%7;
                 nCurrentRotation=0;
-                nCurrentX=nFieldWidth/2;
+                nCurrentX=nFieldWidth/2-1;
                 nCurrentY=0;
 
                 //if piece does not fit
@@ -183,7 +184,7 @@ int main()
                 if(tetromino[nCurrentPiece][rotate(px,py,nCurrentRotation)]==L'X')
                     screen[(nCurrentY+py+2)*nScreenWidth+(nCurrentX+px+2)]=nCurrentPiece+65;
         //draw Score
-        swprintf_s(&screen[2*nScreenWidth+nFieldWidth+6],16,L"SCORE : %8d",nScore);
+        swprintf_s(&screen[2*nScreenWidth+nFieldWidth+6],16,L"SCORE: %8d",nScore);
 
 
         if(!vLines.empty())
@@ -210,7 +211,7 @@ int main()
         WriteConsoleOutputCharacterW(hConsole,screen,nScreenWidth*nScreenHeight,{0,0},&dwBytesWritten);
     }
     CloseHandle(hConsole);
-    cout<<"Game Over {p.s. nubde}!! \t Score : "<<nScore<<"\n";
+    cout<<"Game Over {p.s. nubde}!!  Score : "<<nScore<<"\n";
     system("pause");
     return 0;
 }
